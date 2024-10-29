@@ -8,8 +8,11 @@ Game::Game()
     // 必要な初期化処理を行う
     Title_Start = LoadGraph("data/picture/Title_Start.png");
     Title_Settings = LoadGraph("data/picture/Title_Settings.png");
+    Score_UI = LoadGraph("data/picture/Score_UI.png");
+    Score_Effect = LoadGraph("data/picture/+1.png");
     Title_isStart = true;
     isInit = false;
+    isDrawingScoreEffect = false;
 
     fps = 0;
     enemyNum = 1;
@@ -20,6 +23,7 @@ Game::Game()
     for (int i = 0; i < maxGroundNum; i++)
     {
         enemy[i] = new Enemy(background.getS_groundPos(i));
+        addScore[i] = false;
     }
 
     TitleEnemy = new Enemy(background.getTitle_groundPos());
@@ -107,9 +111,10 @@ void Game::Draw()
 // タイトル画面の更新処理
 void Game::UpdateTitle()
 {
-    if (isInit)
+    if (!isInit)
     {
         enemyNum = 1;
+        enemyAwakenTime->reset();
         camera.Init(player.getPlayerPos());
         background.Init();
         player.Init();
@@ -132,6 +137,7 @@ void Game::UpdateTitle()
         if (!inputA)
         {
             currentState = PLAYING; // スペースキーが押されたらゲーム開始
+            isInit = false;
         }
         inputA = true;
     }
@@ -178,12 +184,15 @@ void Game::UpdatePlaying()
             enemy[i]->Update(player.getPlayerPos());
         }
     }
-
-    for (int i = 0; i < maxGroundNum; i++)
+    
+    if (player.getPlayerPos().y >= -0.5)
     {
-        if (!player.setIsHit())
+        for (int i = 0; i < maxGroundNum; i++)
         {
-            player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius());
+            if (!player.setIsHit())
+            {
+                player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting());
+            }
         }
     }
 
@@ -196,6 +205,11 @@ void Game::UpdatePlaying()
     }
 
     // プレイが終了したらリザルト画面に遷移する処理
+    if (player.getIsGameOver())
+    {
+        currentState = RESULT;
+    }
+
 }
 
 // リザルト画面の更新処理
@@ -252,10 +266,7 @@ void Game::DrawPlaying()
         }
     }
 
-    if (player.getIsGameOver())
-    {
-        currentState = RESULT;
-    }
+    DrawGraph(0, 0, Score_UI, TRUE);
 }
 
 // リザルト画面の描画処理
@@ -322,7 +333,7 @@ void Game::DisplayDebugInfo()
     DrawFormatString(10, 230, GetColor(255, 255, 255), "EnemyPos: (%f,%f,%f)", enemy[0]->getEnemyPos().x, enemy[0]->getEnemyPos().y, enemy[0]->getEnemyPos().z);
     DrawFormatString(10, 250, GetColor(255, 255, 255), "EnemyRotate: (%f,%f,%f)", enemy[0]->getEnemyRotate().x, enemy[0]->getEnemyRotate().y, enemy[0]->getEnemyRotate().z);
     DrawFormatString(10, 270, GetColor(255, 255, 255), "EnemyScale: (%f,%f,%f)", enemy[0]->getEnemyScale().x, enemy[0]->getEnemyScale().y, enemy[0]->getEnemyScale().z);
-    DrawFormatString(10, 290, GetColor(255, 0, 0), "PlayerHP : %d", player.getPlayerHP());
+    DrawFormatString(10, 290, GetColor(255, 0, 0), "Score : %d", player.setScore());
     DrawFormatString(10, 410, GetColor(255, 255, 255), "enemyAwakenTimer : %f", enemyAwakenTime->getElapsedTime());
 
 
@@ -447,7 +458,7 @@ void Game::HitStopManager()
 {
     for (int i = 0; i < maxGroundNum; i++)
     {
-        if (hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius()))
+        if (hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting()))
         {
             if (!player.getIsInvincible())
             {
@@ -463,5 +474,18 @@ void Game::HitStopManager()
     if (hitStopTimer->hasElapsed())
     {
         hitStop = false;
+    }
+}
+
+void Game::DrawScoreEffect(VECTOR playerPos)
+{
+
+    if (!isDrawingScoreEffect)
+    {
+        VECTOR EffectPos = playerPos;
+
+
+
+        DrawBillboard3D(playerPos, 0.5f, 0.5f, 1.0f, 0.0f, Score_Effect, TRUE);
     }
 }

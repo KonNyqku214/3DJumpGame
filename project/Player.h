@@ -50,6 +50,7 @@ public:
 
 
 	int getPlayerHP() { return HP;}						// HP取得
+	int& setScore() { return Score; }					// スコア設定
 	VECTOR& getPlayerPos(){ return playerPos; }			// 座標取得
 	VECTOR& getPlayerRotate(){ return playerRotate; }	// 回転取得
 	VECTOR& getPlayerScale(){ return playerScale; }		// スケール取得
@@ -71,6 +72,7 @@ private:
 	float alpha;			// プレイヤー透明度
 	int alphaTime;			// 透明度用タイマー
 	int HP;					// 体力
+	int Score;				// スコア
 	float moveSpeed;		// プレイヤーの移動速度
 	float fallSpeed;		// プレイヤーの落下速度
 	float maxSpeed;			// 最大移動速度

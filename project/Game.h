@@ -26,6 +26,14 @@ private:
     bool Title_isStart;     // スタート選択されているか
     int Title_Start;        // スタート選択画像
     int Title_Settings;     // 設定選択画像
+    int Score_UI;           // スコアのUI
+    int Score_Effect;       // "+1"
+    float alpha = 1.0f;	//画像透明度
+    float img_Y = 0.0f;	//画像Y座標
+    void DrawScoreEffect(VECTOR playerPos); // "+1"表示
+    bool isDrawingScoreEffect;  //"+1"表示中か
+
+
     bool isInit;
     bool isDebugMode;    // デバッグモードのフラグ
     bool inputF1;        // F1キーが押されたか
@@ -34,6 +42,7 @@ private:
     bool enemyStop;      //　敵停止中
     bool inputA;         //Aキーが押されたか
     bool hitStop;        // ヒットストップ
+    bool addScore[maxGroundNum];       //スコアが加算されたか
     int ObjCode;         // デバッグ中操作する物の番号
     int enemyNum;        // 敵番号
     int frameCount;      // フレームカウント

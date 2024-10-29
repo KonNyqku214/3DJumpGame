@@ -13,6 +13,7 @@ Player::Player()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
+	Score = 0;
 	alpha = 1.0f;
 	isJumping = false;
 	onGround = true;
@@ -62,6 +63,7 @@ void Player::Init()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
+	Score = 0;
 	alpha = 1.0f;
 	isJumping = false;
 	onGround = true;
