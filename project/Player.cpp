@@ -13,9 +13,9 @@ Player::Player()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
-	Score = 0;
 	alpha = 1.0f;
 	isJumping = false;
+	onGround = true;
 	isTakeDamage = false;
 	isHit = false;
 	isHitting = false;
@@ -26,7 +26,6 @@ Player::Player()
 	fallSpeed = 0.0f;
 
 	invincibleTimer = new Timer(3000);
-	Title_jumpTimer = new Timer(3000);
 	alpha = 1.0;
 	alphaTime = 0;
 	padInputX = 0;
@@ -43,12 +42,6 @@ Player::Player()
 	totalAnimTime = MV1GetAttachAnimTotalTime(playerHandle, attachAnimIndex);
 
 	MV1SetScale(playerHandle, VGet(0.01, 0.01, 0.01));
-
-	// フォントを一時的にシステムに登録
-	fontFilePath = "data/font/ZenMaruGothic-Black.ttf";
-	fontCount = AddFontResourceEx(fontFilePath, FR_PRIVATE, NULL);
-	fontHandle_Score = CreateFontToHandle("Zen Maru Gothic Black", 24, 3, DX_FONTTYPE_ANTIALIASING);
-
 }
 
 Player::~Player()
@@ -69,9 +62,9 @@ void Player::Init()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
-	Score = 0;
 	alpha = 1.0f;
 	isJumping = false;
+	onGround = true;
 	isTakeDamage = false;
 	isHit = false;
 	isHitting = false;
@@ -98,11 +91,6 @@ void Player::Init()
 	totalAnimTime = MV1GetAttachAnimTotalTime(playerHandle, attachAnimIndex);
 
 	MV1SetScale(playerHandle, VGet(0.01, 0.01, 0.01));
-
-	// フォントを一時的にシステムに登録
-	fontFilePath = "data/font/ZenMaruGothic-Black.ttf";
-	fontCount = AddFontResourceEx(fontFilePath, FR_PRIVATE, NULL);
-	fontHandle_Score= CreateFontToHandle("ZenMaruGothic-Black", 24, 3, DX_FONTTYPE_ANTIALIASING);
 }
 
 void Player::Update()
@@ -112,7 +100,15 @@ void Player::Update()
 	padState = GetJoypadInputState(DX_INPUT_PAD1);
 
 	playerVelocity = VGet(0, 0, 0);
+	onGround = CheckOnGround();
 
+	if (isHit)
+	{
+		if (!isHitting)
+		{
+			isTakeDamage = true;
+		}
+	}
 
 	//ダメージを受けていなかったら操作可能
 	if (!isTakeDamage)
@@ -128,16 +124,9 @@ void Player::Update()
 	{
 		takeDamage();
 	}
-	if (isHit)
-	{
-		if (!isHitting)
-		{
-			isTakeDamage = true;
-		}
-	}
 
 
-	if (animTime == totalAnimTime&&playerState==DIE)
+	if (animTime == totalAnimTime&&playerState==DIE||playerPos.y<-30.0f)
 	{
 		isGameOver = true;
 	}
@@ -145,6 +134,7 @@ void Player::Update()
 
 	if (invincibleTimer->hasElapsed())
 	{
+		isHit = false;
 		isHitting = false;
 		isInvincible = false;
 	}
@@ -165,9 +155,12 @@ void Player::Update()
 void Player::Draw()
 {
 	//丸影の描画
-	shadowPos = VGet(playerPos.x, 0.1, playerPos.z);
-	shadowWidth = (-0.05 * playerPos.y) + 1.5f;
-	DrawCone3D(shadowPos, VGet(shadowPos.x, shadowPos.y - 0.3, shadowPos.z), shadowWidth, 5, 0xAA000000, 0xAA000000, TRUE);
+	if (onGround)
+	{
+		shadowPos = VGet(playerPos.x, 0.1, playerPos.z);
+		shadowWidth = (-0.05 * playerPos.y) + 1.5f;
+		DrawCone3D(shadowPos, VGet(shadowPos.x, shadowPos.y - 0.3, shadowPos.z), shadowWidth, 5, 0xAA000000, 0xAA000000, TRUE);
+	}
 
 	MV1DrawModel(playerHandle);
 }
@@ -175,49 +168,79 @@ void Player::Draw()
 void Player::playerMove()
 {
 
-
-	//左スティックが入力されている場合
-	if ((padInputX != 0 || padInputY != 0))
+	if (!onGround && !isJumping)
 	{
-		// Aボタンが押されている場合
-		if ((padState & PAD_INPUT_A) != 0)
+		fallSpeed -= Gravity;
+	}
+
+	if (playerPos.y > -0.5f)
+	{
+
+		//左スティックが入力されている場合
+		if ((padInputX != 0 || padInputY != 0))
 		{
-			if (!isJumping)
+			// Aボタンが押されている場合
+			if ((padState & PAD_INPUT_A) != 0)
 			{
-				playerState = RUNNING;  // 走り
+				if (!isJumping)
+				{
+					if (onGround)
+					{
+						playerState = RUNNING;  // 走り
+					}
+					else
+					{
+						playerState = JUMP_IDLE;
+					}
+				}
+				moveSpeed = 0.0004f;
 			}
-			moveSpeed = 0.0004f;
+			else
+			{
+				if (!isJumping)
+				{
+					if (onGround)
+					{
+						playerState = WALK;  // 走り
+					}
+					else
+					{
+						playerState = JUMP_IDLE;
+					}
+				}
+				moveSpeed = 0.0002f;
+			}
+
+			// 左スティックの入力に応じて移動量を追加
+			playerVelocity.x += padInputX * moveSpeed;
+			playerVelocity.z -= padInputY * moveSpeed;
+			// スティックの入力があれば、キャラクターの向きを変更する
+			playerRotate.y = atan2(padInputX * -1, padInputY); // 進行方向に回転
 		}
 		else
 		{
 			if (!isJumping)
 			{
-				playerState = WALK;      // 歩き
+				if (onGround)
+				{
+					playerState = STOP;  // IDLE
+				}
+				else
+				{
+					playerState = JUMP_IDLE;
+				}
 			}
-			moveSpeed = 0.0002f;
-		}
-
-		// 左スティックの入力に応じて移動量を追加
-		playerVelocity.x += padInputX * moveSpeed;
-		playerVelocity.z -= padInputY * moveSpeed;
-		// スティックの入力があれば、キャラクターの向きを変更する
-		playerRotate.y = atan2(padInputX * -1, padInputY); // 進行方向に回転
-	}
-	else
-	{
-		if (!isJumping)
-		{
-			playerState = STOP;		// 停止中
 		}
 	}
 }
+
 
 
 void Player::playerJump()
 {
 
 	//ジャンプ中のみ重力を適応
-	if (playerPos.y>0)
+	if (isJumping)
 	{
 		fallSpeed -= Gravity;
 	}
@@ -241,11 +264,14 @@ void Player::playerJump()
 	//Y座標が０を下回ったら０に戻す
 	if (playerPos.y < 0)
 	{
-		fallSpeed = 0;
-		playerPos.y = 0;
-		animTimer = 0;
-		playerState = JUMP_END;
-		isJumping = false;
+		if (onGround)
+		{
+			fallSpeed = 0;
+			playerPos.y = 0;
+			animTimer = 0;
+			playerState = JUMP_END;
+			isJumping = false;
+		}
 	}
 
 	//落下速度を移動量に加える
@@ -299,7 +325,7 @@ void Player::ChangeAnim(int motionNum)
 void Player::takeDamage()
 {
 
-	if (playerPos.y > 0)
+	if (isTakeDamage)
 	{
 		fallSpeed -= Gravity;
 		// プレイヤーの向きに対して反対方向へノックバックするため、回転角から移動量を計算
@@ -334,10 +360,13 @@ void Player::takeDamage()
 
 	if (playerPos.y < 0)
 	{
-		fallSpeed = 0;
-		playerPos.y = 0;
-		isJumping = false;
-		isTakeDamage = false;
+		if (onGround)
+		{
+			fallSpeed = 0;
+			playerPos.y = 0;
+			isJumping = false;
+			isTakeDamage = false;
+		}
 
 		if (HP <= 0)
 		{
@@ -387,61 +416,23 @@ void Player::playerAlpha()
 			}
 		}
 	}
+	else
+	{
+		alpha = 1.0;
+	}
 }
 
-void Player::Title(float waveScale)
+bool Player::CheckOnGround()
 {
-	playerVelocity = VGet(0, 0, 0);
+	float absX = fabs(playerPos.x);
+	float absZ = fabs(playerPos.z);
 
-	if (!isJumping)
-	{
-		playerState = STOP;
+	// ひし形の条件
+	if (absX + absZ <= 40) {
+		return true; // ひし形の内部
 	}
-		//ジャンプ中のみ重力を適応
-	if (playerPos.y > 0)
+	else
 	{
-		fallSpeed -= Gravity;
+		return false;
 	}
-
-	//着地中にAボタンが押されたらジャンプ
-	if (!isJumping)
-	{
-		if (waveScale>=0.04f&&waveScale<=0.045f)
-		{
-			fallSpeed += JumpPower;
-			isJumping = true;
-			playerState = JUMP_START;
-		}
-	}
-
-	if (playerState == JUMP_START && animTimer == totalAnimTime)
-	{
-		playerState = JUMP_IDLE;
-	}
-
-	//Y座標が０を下回ったら０に戻す
-	if (playerPos.y < 0)
-	{
-		fallSpeed = 0;
-		playerPos.y = 0;
-		animTimer = 0;
-		playerState = JUMP_END;
-		isJumping = false;
-	}
-
-	//落下速度を移動量に加える
-	playerVelocity.y += fallSpeed;
-
-	Animation();	// アニメ処理
-
-	//座標、回転、サイズなどをセット
-	playerRotate = VGet(0, -135 * DX_PI_F / 180.0f, 0);
-	playerPos = VAdd(playerPos, playerVelocity);
-	MV1SetPosition(playerHandle, playerPos);
-	MV1SetRotationXYZ(playerHandle, playerRotate);
-	MV1SetScale(playerHandle, playerScale);
-
-	//プレイヤーの状態を保存
-	lastState = playerState;
-
 }

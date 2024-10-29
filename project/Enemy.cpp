@@ -6,8 +6,8 @@ Enemy::Enemy(VECTOR groundPos)
 	enemyHandle = MV1LoadModel("data/model/Character/Skeleton_Mage.mv1");
 
 	hitRadius = 5;
-	hitRadiusWeight = 1.5;
-	safeRadius = (waveScale.x * hitRadiusScale) - hitRadiusWeight;
+	hitRadiusWidth = 1.5;
+	safeRadius = (waveScale.x * hitRadiusScale) - hitRadiusWidth;
 
 	enemyPos = groundPos;
 	enemyRotate = VGet(0, 0, 0);
@@ -16,13 +16,13 @@ Enemy::Enemy(VECTOR groundPos)
 	waveRotate = VGet(0, 0, 0);
 	waveScale = VGet(0.01, 0.01, 0.01);
 
-	enemyState = IDLE;
-	lastState = IDLE;
+	runningEnemyNum = 1;
+	enemyState = INACTIVE;
+	lastState = INACTIVE;
 	isAttack = false;
 	waveRunning = false;
 	isRunning = false;
-	titleInit = false;
-	waitTimer = new Timer(5000);	//待機時間を5000ミリ秒に設定
+	waitTimer = new Timer(4000);	//待機時間を5000ミリ秒に設定
 
 	MV1SetPosition(enemyHandle, enemyPos);
 	MV1SetRotationXYZ(enemyHandle, enemyRotate);
@@ -42,8 +42,8 @@ Enemy::~Enemy()
 void Enemy::Init(VECTOR groundPos)
 {
 	hitRadius = 5;
-	hitRadiusWeight = 1.5;
-	safeRadius = (waveScale.x * hitRadiusScale) - hitRadiusWeight;
+	hitRadiusWidth = 1.5;
+	safeRadius = (waveScale.x * hitRadiusScale) - hitRadiusWidth-3.0;
 
 	enemyPos = groundPos;
 	enemyRotate = VGet(0, 0, 0);
@@ -52,10 +52,12 @@ void Enemy::Init(VECTOR groundPos)
 	waveRotate = VGet(0, 0, 0);
 	waveScale = VGet(0.01, 0.01, 0.01);
 
-	enemyState = IDLE;
-	lastState = IDLE;
+	runningEnemyNum = 1;
+	enemyState = INACTIVE;
+	lastState = INACTIVE;
 	isAttack = false;
 	waveRunning = false;
+	isRunning = false;
 
 	wavePos = VGet(30, 0, 0);
 	waveRotate = VGet(0, 0, 0);
@@ -117,7 +119,7 @@ void Enemy::DrawDebug()
 {
 	// 衝撃波のあたり判定.
 	DrawSphere3D(wavePos, (waveScale.x * hitRadiusScale), 5, 0x00ffff, 0x00ffff, false);//外側
-	DrawSphere3D(wavePos, (waveScale.x * hitRadiusScale) - hitRadiusWeight-3.0 , 5, 0x00ffff, 0x00ffff, false);//内側
+	DrawSphere3D(wavePos, (waveScale.x * hitRadiusScale) - hitRadiusWidth-3.0 , 5, 0x00ffff, 0x00ffff, false);//内側
 }
 
 void Enemy::calcRotateY(VECTOR playerPos)
@@ -139,6 +141,8 @@ void Enemy::AttackManager()
 		wavePos = enemyPos;
 		if (!waitTimer->isActive())
 		{
+			//待機時間を4～6でランダムに設定
+			waitTimer->setDuration((GetRand(2000) + 3000));
 			waitTimer->start();	//タイマースタート
 		}
 		enemyState = ATTACK;	//攻撃中に変更
@@ -154,10 +158,12 @@ void Enemy::AttackManager()
 		{
 			waveScale.x += waveSpeed;
 			waveScale.z += waveSpeed;
+			hitRadiusWidth += 0.05;
 			waveRotate.y += 0.1;
 		}
 		else if(waveScale.x > maxWaveScale)//リセット
 		{
+			hitRadiusWidth = 1.5;
 			waveScale.x = 0.001;
 			waveScale.z = 0.001;
 			waveRotate.y = 0;
@@ -213,69 +219,4 @@ void Enemy::ChangeAnim(int motionNum)
 	attachAnimIndex = MV1AttachAnim(enemyHandle, motionNum, -1, FALSE);
 	// アタッチしたアニメーションの総再生時間を取得する
 	totalAnimTime = MV1GetAttachAnimTotalTime(enemyHandle, attachAnimIndex);
-}
-
-void Enemy::Title_Update()
-{
-	if (!titleInit)
-	{
-		enemyState = IDLE;
-		waitTimer->setDuration(3000);
-		titleInit = true;
-	}
-
-	calcRotateY(VGet(0, 0, 0));
-
-	if (!isAttack)
-	{
-		wavePos = enemyPos;
-		if (!waitTimer->isActive())
-		{
-			waitTimer->start();	//タイマースタート
-		}
-		enemyState = ATTACK;	//攻撃中に変更
-		isAttack = true;
-	}
-	else
-	{
-		if (enemyState == ATTACK && animTime == 18)
-		{
-			waveRunning = true;
-		}
-		if ((waveScale.x < 0.1f ) && waveRunning)//衝撃波を大きく
-		{
-			waveScale.x += waveSpeed;
-			waveScale.z += waveSpeed;
-			waveRotate.y += 0.1;
-		}
-		else if (waveScale.x > 0.1f)//リセット
-		{
-			waveScale.x = 0.001;
-			waveScale.z = 0.001;
-			waveRotate.y = 0;
-			waveRunning = false;
-		}
-
-		if (animTime == totalAnimTime)
-		{
-			enemyState = IDLE;	//IDLEに変更
-		}
-
-		if (waitTimer->hasElapsed())
-		{
-			isAttack = false;
-		}
-	}
-	Animation();	// アニメ処理
-
-	MV1SetPosition(enemyHandle, enemyPos);
-	MV1SetRotationXYZ(enemyHandle, enemyRotate);
-	MV1SetScale(enemyHandle, enemyScale);
-
-	MV1SetPosition(waveHandle, wavePos);
-	MV1SetRotationXYZ(waveHandle, waveRotate);
-	MV1SetScale(waveHandle, waveScale);
-
-	lastState = enemyState;
-
 }

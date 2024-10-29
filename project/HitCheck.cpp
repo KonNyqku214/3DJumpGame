@@ -1,6 +1,6 @@
 #include"HitCheck.h"
 
-bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos,float playerRadius,float hitRadius,float safeRadius,int& Score)
+bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos,float playerRadius,float hitRadius,float safeRadius)
 {
 	// 2つのプレイヤー間の距離を計算
 	VECTOR diff = VSub(playerPos, enemyPos);
@@ -17,7 +17,7 @@ bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos,float playerRadius,f
 	//衝撃波にあたったか
 	if (distance < totalHitRadius)
 	{
-		if (playerPos.y < 5.0f)
+		if (playerPos.y < shockWaveHeight)
 		{
 			hitDamageRadius = true;
 		}
@@ -35,16 +35,10 @@ bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos,float playerRadius,f
 	if (distance < totalSafeRadius)
 	{
 		hitSafeRadius = true;
-		if (!addScore)
-		{
-			Score++;
-			addScore = true;
-		}
 	}
 	else
 	{
 		hitSafeRadius = false;
-		addScore = false;
 	}
 
 	//プレイヤーのYが3以下で、衝撃波にあたり、安全地帯にはいっていない場合

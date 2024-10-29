@@ -1,11 +1,11 @@
 #pragma once
 #include"DxLib.h"
 #include"Timer.h"
+#include"BackGround.h"
 #include"math.h"
-#include <Windows.h> // AddFontResourceEx を使うために必要
 
 //定数
-const float JumpPower = 1.0f;		//ジャンプ力
+const float JumpPower = 0.8f;		//ジャンプ力
 const float Gravity = 0.05f;		//重力
 
 const float KnockBackPower = 0.5f;	//ノックバックの大きさ
@@ -46,17 +46,13 @@ public:
 	void Draw();	// 描画
 	void DrawDebug();// デバッグの描画
 
-	void Title(float waveScale);	//タイトル画面
-
 	int getPlayerHP() { return HP;}						// HP取得
-	int& getScore() { return Score; }					// スコア取得
 	VECTOR& getPlayerPos(){ return playerPos; }			// 座標取得
 	VECTOR& getPlayerRotate(){ return playerRotate; }	// 回転取得
 	VECTOR& getPlayerScale(){ return playerScale; }		// スケール取得
 	double getAnimTime() { return animTime; }			// 現在のアニメ時間を取得
 	float getHitRadius() { return playerWidth; }			// 当たり判定の半径取得
 	Timer* invincibleTimer;
-	Timer* Title_jumpTimer;		//タイトル画面でのジャンプ間隔
 
 	void takeDamage();
 	bool& setIsHit() { return isHit; }
@@ -64,19 +60,14 @@ public:
 	bool getIsInvincible() { return isInvincible; }
 	bool getIsHitting() { return isHitting; }
 	bool getIsGameOver() { return isGameOver; }
+	bool getOnGround() { return onGround; }
 
-	int fontHandle_Score;	// スコアのフォントハンドル
 
 private:
 	int playerHandle;		// プレイヤーモデルハンドル
-
-	const char* fontFilePath;
-	int fontCount;
-
 	float alpha;			// プレイヤー透明度
 	int alphaTime;			// 透明度用タイマー
 	int HP;					// 体力
-	int Score;				// 獲得スコア
 	float moveSpeed;		// プレイヤーの移動速度
 	float fallSpeed;		// プレイヤーの落下速度
 	float maxSpeed;			// 最大移動速度
@@ -88,6 +79,7 @@ private:
 	bool isHitting;			// ダメージを受けている最中か
 	bool isInvincible;		// 無敵常態かどうか
 	bool isGameOver;		//ゲームオーバーか
+	bool onGround;			//地面の上かどうか
 
 	//コントローラー
 	int padInputX;			// 左スティックのX軸
@@ -117,4 +109,5 @@ private:
 	void Animation();
 	void ChangeAnim(int animIndex);
 	void playerAlpha();
+	bool CheckOnGround();
 };

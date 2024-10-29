@@ -6,19 +6,19 @@ Game::Game()
     ply1(VGet(-24,0,0)),camera(player.getPlayerPos())// 初期状態はタイトル画面
 {
     // 必要な初期化処理を行う
+    titleHandle = LoadGraph("data/picture/JumpSurvival.png");
     fps = 0;
+    enemyNum = 1;
     currentTime = 0;
     ObjCode = 0;
-    isInit = false;
-    for (int i = 0; i < 4; i++)
+    inputA = false;
+    hitStop = false;
+    for (int i = 0; i < maxGroundNum; i++)
     {
         enemy[i] = new Enemy(background.getS_groundPos(i));
     }
-    TitleEnemy = new Enemy(background.getTitle_groundPos());
     enemyAwakenTime = new Timer(7000);  //7000ミリ秒ごとに敵が起きる
-    Title_START = LoadGraph("data/picture/Title_Start.png");
-    Title_SETTINGS = LoadGraph("data/picture/Title_Settings.png");
-    Title_IsStart = TRUE;
+    hitStopTimer = new Timer(300);      //ダメージ時300ミリ秒のヒットストップ
 }
 
 // 更新処理
@@ -101,46 +101,74 @@ void Game::Draw()
 // タイトル画面の更新処理
 void Game::UpdateTitle()
 {
-    if (!isInit)
+    enemyNum = 1;
+    camera.Init(player.getPlayerPos());
+    background.Init();
+    player.Init();
+    for (int i = 0; i < maxGroundNum; i++)
     {
-        camera.Init(player.getPlayerPos());
-        background.Init();
-        player.Init();
-        for (int i = 0; i < 4; i++)
-        {
-            enemy[i]->Init(background.getS_groundPos(i));
-        }
-
-        isInit = true;
+        enemy[i]->Init(background.getS_groundPos(i));
     }
 
-    camera.Title_Update();
-    background.Title_Update();
-    player.Title(TitleEnemy->getWaveScale());
-    TitleEnemy->Title_Update();
-
-    if (CheckHitKey(KEY_INPUT_SPACE))
+    padState = GetJoypadInputState(DX_INPUT_PAD1);
+    if ((padState&PAD_INPUT_A)!=0)
     {
-        currentState = PLAYING; // スペースキーが押されたらゲーム開始
-        isInit = false;
+        if (!inputA)
+        {
+            currentState = PLAYING; // スペースキーが押されたらゲーム開始
+        }
+        inputA = true;
+    }
+    else
+    {
+        inputA = false;
     }
 }
 
 // ゲーム中の更新処理
 void Game::UpdatePlaying()
 {
+    HitStopManager();
     camera.Update(player.getPlayerPos());
     background.Update();
-    player.Update();
+    if (!hitStop)
+    {
+        player.Update();
+    }
+
     if (!enemy[0]->setIsRunning())
     {
         enemy[0]->setIsRunning() = true;
     }
     enemyAwaken();
-    for (int i = 0; i < 4; i++)
+
+    if (CheckHitKey(KEY_INPUT_F3))
     {
-        enemy[i]->Update(player.getPlayerPos());
-        player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.getScore());
+        if (!inputF3)
+        {
+            enemyStop = !enemyStop;
+        }
+        inputF3 = true;
+    }
+    else
+    {
+        inputF3 = false;
+    }
+
+    if (!enemyStop&&!hitStop)
+    {
+        for (int i = 0; i < maxGroundNum; i++)
+        {
+            enemy[i]->Update(player.getPlayerPos());
+        }
+    }
+
+    for (int i = 0; i < maxGroundNum; i++)
+    {
+        if (!player.setIsHit())
+        {
+            player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius());
+        }
     }
 
     if (isDebugMode)
@@ -157,36 +185,34 @@ void Game::UpdatePlaying()
 // リザルト画面の更新処理
 void Game::UpdateResult()
 {
-    if (CheckHitKey(KEY_INPUT_RETURN))
+    padState = GetJoypadInputState(DX_INPUT_PAD1);
+    if ((padState & PAD_INPUT_A) != 0)
     {
-        currentState = TITLE; // エンターキーが押されたらタイトル画面に戻る
+        if (!inputA)
+        {
+            currentState = TITLE; // スペースキーが押されたらゲーム開始
+        }
+        inputA = true;
+    }
+    else
+    {
+        inputA = false;
     }
 }
 
 // タイトル画面の描画処理
 void Game::DrawTitle()
 {
-    background.Title_Draw();
-    player.Draw();
-    TitleEnemy->Draw();
-    if (Title_IsStart)
-    {
-        DrawGraph(0, 0, Title_START, TRUE);
-    }
-    else
-    {
-        DrawGraph(0, 0, Title_SETTINGS, TRUE);
-    }
-
-    DrawStringToHandle(1300, 20, "カスタムフォント１２３４", GetColor(255, 255, 255), player.fontHandle_Score);
-    DrawString(100, 100, "Press SPACE to Start", GetColor(255, 255, 255));
+    background.Draw();
+    DrawGraph(0, 0, titleHandle, TRUE);
+    DrawString(100, 100, "Press A to Start", GetColor(255, 255, 255));
 }
 
 // ゲーム中の描画処理
 void Game::DrawPlaying()
 {
     background.Draw();
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < maxGroundNum; i++)
     {
         enemy[i]->Draw();
     }
@@ -196,7 +222,7 @@ void Game::DrawPlaying()
     if (isDebugMode)
     {
         player.DrawDebug();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < maxGroundNum; i++)
         {
             enemy[i]->DrawDebug();
         }
@@ -378,8 +404,7 @@ void Game::DisplayFPS()
 
 void Game::enemyAwaken()
 {
-    int i = 1;
-    if (i < 4)
+    if (enemyNum < maxGroundNum)
     {
         if (!enemyAwakenTime->isActive())
         {
@@ -388,8 +413,31 @@ void Game::enemyAwaken()
 
         if (enemyAwakenTime->hasElapsed())
         {
-            enemy[i]->setIsRunning() = true;
-            i++;
+            enemy[enemyNum]->setIsRunning() = true;
+            enemyNum++;
         }
+    }
+}
+
+void Game::HitStopManager()
+{
+    for (int i = 0; i < maxGroundNum; i++)
+    {
+        if (hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius()))
+        {
+            if (!player.getIsInvincible())
+            {
+                hitStop = true;
+                if (!hitStopTimer->isActive())
+                {
+                    hitStopTimer->start();
+                }
+            }
+        }
+    }
+
+    if (hitStopTimer->hasElapsed())
+    {
+        hitStop = false;
     }
 }

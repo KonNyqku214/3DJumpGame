@@ -5,6 +5,7 @@
 class HitChecker
 {
 public:
-	bool hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius, float hitRadius, float safeRadius,int& Score);
-	bool addScore = false;
+	bool hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius, float hitRadius, float safeRadius);
+private:
+	float shockWaveHeight = 1.0f;
 };
