@@ -1,0 +1,17 @@
+﻿  Player.cpp
+C:\Users\PCuser\Desktop\3DGame\Dxlib_h\DxLib.h(3344,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(9,48): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(11,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(45,49): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(66,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(67,48): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(100,49): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(168,48): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(169,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(170,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(204,25): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(281,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(306,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(307,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\PCuser\Desktop\3DGame\project\Player.cpp(318,32): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+  Gameproject.vcxproj -> C:\Users\PCuser\Desktop\3DGame\project\x64\Debug\Gameproject.exe

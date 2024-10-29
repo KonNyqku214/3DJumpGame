@@ -1,0 +1,6 @@
+C:\Users\teacher\Desktop\今井_ソースコード\Dxlib2DGames20230509\Gameproject\x64\Debug\Gameproject.exe
+D:\学校用フォルダー\DXlib2DGames_Original\Dxlib2DGames20230509\Gameproject\x64\Debug\Gameproject.exe
+D:\学校用フォルダー\ゲームプログラミング\DXlib2DGames_Original\Dxlib2DGames20230509\Gameproject\x64\Debug\Gameproject.exe
+D:\学校用フォルダー\ゲームプログラミング\DXlib2DGames_Original\Dxlib2DGames_20230920\Gameproject\x64\Debug\Gameproject.exe
+C:\Users\PCuser\Desktop\3DFishingGame\Dxlib\Gameproject_copy\x64\Debug\Gameproject.exe
+C:\Users\PCuser\Desktop\3DGame\project\x64\Debug\Gameproject.exe
