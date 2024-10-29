@@ -23,7 +23,10 @@ public:
 
 private:
     GameState currentState;
-    int titleHandle;     // タイトル画像
+    bool Title_isStart;     // スタート選択されているか
+    int Title_Start;        // スタート選択画像
+    int Title_Settings;     // 設定選択画像
+    bool isInit;
     bool isDebugMode;    // デバッグモードのフラグ
     bool inputF1;        // F1キーが押されたか
     bool inputF2;        // F2キーが押されたか
@@ -38,7 +41,6 @@ private:
     int currentTime;     // FPS計算用の時間
     int fps;             // FPS
     int padState;           //コントおーらーの状態
-    int padInputY;			// 左スティックのY軸
 
 
 
@@ -47,6 +49,7 @@ private:
     Fishing ply1;
     Player player;
     Enemy* enemy[maxGroundNum];
+    Enemy* TitleEnemy;
     Timer* enemyAwakenTime;
     Timer* hitStopTimer;
     HitChecker hitChecker;

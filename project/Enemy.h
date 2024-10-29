@@ -32,6 +32,8 @@ public:
 	void Update(VECTOR playerPos);
 	void Draw();
 	void DrawDebug();
+	void Title_Update();
+
 
 	VECTOR& getEnemyPos() { return enemyPos; }
 	VECTOR& getEnemyRotate() { return enemyRotate; }
@@ -39,6 +41,7 @@ public:
 	float getHitRadius() { return (waveScale.x * hitRadiusScale); }
 	float getSafeRadius() { return ((waveScale.x * hitRadiusScale) - hitRadiusWidth - 3.0); }
 	float getHitRadiusWeight() { return hitRadiusWidth; }
+	float getWaveScale() { return waveScale.x; }
 	bool& setIsRunning() { return isRunning; }
 
 private:
@@ -50,9 +53,12 @@ private:
 	float hitRadius;			//ÕŒ‚”g‚Ì”¼Œa
 	float safeRadius;			//ˆÀ‘S”ÍˆÍ‚Ì”¼Œa
 	float hitRadiusWidth;		//ÕŒ‚”g‚Ì•
+	float shadowWidth;			//‰e‚Ì•
 	bool isAttack;				//UŒ‚’†‚©
 	bool waveRunning;			//ÕŒ‚”g‚ª“®‚¢‚Ä‚¢‚é‚©
 	bool isRunning;				//“G‚ª‹N“®’†‚©
+	bool titleInit;
+
 
 	//ƒAƒjƒ[ƒVƒ‡ƒ“
 	int animNum;
@@ -67,6 +73,7 @@ private:
 	VECTOR enemyPos;
 	VECTOR enemyRotate;
 	VECTOR enemyScale;
+	VECTOR shadowPos;
 	VECTOR wavePos;
 	VECTOR waveRotate;
 	VECTOR waveScale;

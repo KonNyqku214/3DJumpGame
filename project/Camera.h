@@ -9,6 +9,8 @@ public:
 	void Init(VECTOR playerPos);
 	void Update(VECTOR playerPos);
 	void DebugMode();
+	void Title_Update();
+
 
 	VECTOR getCameraPos() const {
 		return cameraPosDiff; // 現在のカメラ位置を返す（例として固定）

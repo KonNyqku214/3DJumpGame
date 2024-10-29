@@ -12,6 +12,8 @@ Enemy::Enemy(VECTOR groundPos)
 	enemyPos = groundPos;
 	enemyRotate = VGet(0, 0, 0);
 	enemyScale = VGet(3, 3, 3);
+	shadowPos = VGet(enemyPos.x, 0.1, enemyPos.z);
+	shadowWidth = 1.5f;
 	wavePos = enemyPos;
 	waveRotate = VGet(0, 0, 0);
 	waveScale = VGet(0.01, 0.01, 0.01);
@@ -22,6 +24,7 @@ Enemy::Enemy(VECTOR groundPos)
 	isAttack = false;
 	waveRunning = false;
 	isRunning = false;
+	titleInit = false;
 	waitTimer = new Timer(4000);	//待機時間を5000ミリ秒に設定
 
 	MV1SetPosition(enemyHandle, enemyPos);
@@ -48,6 +51,8 @@ void Enemy::Init(VECTOR groundPos)
 	enemyPos = groundPos;
 	enemyRotate = VGet(0, 0, 0);
 	enemyScale = VGet(3, 3, 3);
+	shadowPos = VGet(enemyPos.x, 0.1, enemyPos.z);
+	shadowWidth = 1.5f;
 	wavePos = enemyPos;
 	waveRotate = VGet(0, 0, 0);
 	waveScale = VGet(0.01, 0.01, 0.01);
@@ -58,6 +63,7 @@ void Enemy::Init(VECTOR groundPos)
 	isAttack = false;
 	waveRunning = false;
 	isRunning = false;
+	titleInit = false;
 
 	wavePos = VGet(30, 0, 0);
 	waveRotate = VGet(0, 0, 0);
@@ -111,6 +117,8 @@ void Enemy::Update(VECTOR playerPos)
 
 void Enemy::Draw()
 {
+	shadowPos = VGet(enemyPos.x, 0.1, enemyPos.z);
+	DrawCone3D(shadowPos, VGet(shadowPos.x, shadowPos.y - 0.3, shadowPos.z), shadowWidth, 5, 0xAA000000, 0xAA000000, TRUE);
 	MV1DrawModel(enemyHandle);
 	if(waveRunning){MV1DrawModel(waveHandle);}
 }
@@ -219,4 +227,69 @@ void Enemy::ChangeAnim(int motionNum)
 	attachAnimIndex = MV1AttachAnim(enemyHandle, motionNum, -1, FALSE);
 	// アタッチしたアニメーションの総再生時間を取得する
 	totalAnimTime = MV1GetAttachAnimTotalTime(enemyHandle, attachAnimIndex);
+}
+
+void Enemy::Title_Update()
+{
+	if (!titleInit)
+	{
+		enemyState = IDLE;
+		waitTimer->setDuration(3000);
+		titleInit = true;
+	}
+
+	calcRotateY(VGet(0, 0, 0));
+
+	if (!isAttack)
+	{
+		wavePos = enemyPos;
+		if (!waitTimer->isActive())
+		{
+			waitTimer->start();	//タイマースタート
+		}
+		enemyState = ATTACK;	//攻撃中に変更
+		isAttack = true;
+	}
+	else
+	{
+		if (enemyState == ATTACK && animTime == 18)
+		{
+			waveRunning = true;
+		}
+		if ((waveScale.x < 0.1f) && waveRunning)//衝撃波を大きく
+		{
+			waveScale.x += waveSpeed;
+			waveScale.z += waveSpeed;
+			waveRotate.y += 0.1;
+		}
+		else if (waveScale.x > 0.1f)//リセット
+		{
+			waveScale.x = 0.001;
+			waveScale.z = 0.001;
+			waveRotate.y = 0;
+			waveRunning = false;
+		}
+
+		if (animTime == totalAnimTime)
+		{
+			enemyState = IDLE;	//IDLEに変更
+		}
+
+		if (waitTimer->hasElapsed())
+		{
+			isAttack = false;
+		}
+	}
+	Animation();	// アニメ処理
+
+	MV1SetPosition(enemyHandle, enemyPos);
+	MV1SetRotationXYZ(enemyHandle, enemyRotate);
+	MV1SetScale(enemyHandle, enemyScale);
+
+	MV1SetPosition(waveHandle, wavePos);
+	MV1SetRotationXYZ(waveHandle, waveRotate);
+	MV1SetScale(waveHandle, waveScale);
+
+	lastState = enemyState;
+
 }

@@ -71,3 +71,12 @@ void Camera::DebugMode()
 		cameraPosDiff.y--;
 	}
 }
+
+void Camera::Title_Update()
+{
+	//奥行0.1～1000までをカメラの描画範囲とする
+	SetCameraNearFar(0.1f, 1000.0f);
+	//(0,10,-20)の視点から(0,10,0)のターゲットを見る角度にカメラを設置
+	SetCameraPositionAndTarget_UpVecY(VGet(28, 25, -38), VGet(29, 0, 15));
+
+}

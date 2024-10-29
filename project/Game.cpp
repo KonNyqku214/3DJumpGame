@@ -6,7 +6,11 @@ Game::Game()
     ply1(VGet(-24,0,0)),camera(player.getPlayerPos())// 初期状態はタイトル画面
 {
     // 必要な初期化処理を行う
-    titleHandle = LoadGraph("data/picture/JumpSurvival.png");
+    Title_Start = LoadGraph("data/picture/Title_Start.png");
+    Title_Settings = LoadGraph("data/picture/Title_Settings.png");
+    Title_isStart = true;
+    isInit = false;
+
     fps = 0;
     enemyNum = 1;
     currentTime = 0;
@@ -17,6 +21,8 @@ Game::Game()
     {
         enemy[i] = new Enemy(background.getS_groundPos(i));
     }
+
+    TitleEnemy = new Enemy(background.getTitle_groundPos());
     enemyAwakenTime = new Timer(7000);  //7000ミリ秒ごとに敵が起きる
     hitStopTimer = new Timer(300);      //ダメージ時300ミリ秒のヒットストップ
 }
@@ -101,14 +107,24 @@ void Game::Draw()
 // タイトル画面の更新処理
 void Game::UpdateTitle()
 {
-    enemyNum = 1;
-    camera.Init(player.getPlayerPos());
-    background.Init();
-    player.Init();
-    for (int i = 0; i < maxGroundNum; i++)
+    if (isInit)
     {
-        enemy[i]->Init(background.getS_groundPos(i));
+        enemyNum = 1;
+        camera.Init(player.getPlayerPos());
+        background.Init();
+        player.Init();
+        for (int i = 0; i < maxGroundNum; i++)
+        {
+            enemy[i]->Init(background.getS_groundPos(i));
+        }
+
+        isInit = true;
     }
+
+    camera.Title_Update();
+    background.Title_Update();
+    player.Title(TitleEnemy->getWaveScale());
+    TitleEnemy->Title_Update();
 
     padState = GetJoypadInputState(DX_INPUT_PAD1);
     if ((padState&PAD_INPUT_A)!=0)
@@ -203,9 +219,17 @@ void Game::UpdateResult()
 // タイトル画面の描画処理
 void Game::DrawTitle()
 {
-    background.Draw();
-    DrawGraph(0, 0, titleHandle, TRUE);
-    DrawString(100, 100, "Press A to Start", GetColor(255, 255, 255));
+    background.Title_Draw();
+    player.Draw();
+    TitleEnemy->Draw();
+    if (Title_isStart)
+    {
+        DrawGraph(0, 0, Title_Start, TRUE);
+    }
+    else
+    {
+        DrawGraph(0, 0, Title_Settings, TRUE);
+    }
 }
 
 // ゲーム中の描画処理

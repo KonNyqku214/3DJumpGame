@@ -436,3 +436,66 @@ bool Player::CheckOnGround()
 		return false;
 	}
 }
+
+void Player::Title(float waveScale)
+{
+	playerVelocity = VGet(0, 0, 0);
+	playerRotate = VGet(0, -135 * DX_PI_F / 180.0f, 0);
+
+	//ジャンプ中のみ重力を適応
+	if (isJumping)
+	{
+		fallSpeed -= Gravity;
+	}
+
+	if (!isJumping)
+	{
+		playerState = STOP;
+	}
+
+	//着地中にAボタンが押されたらジャンプ
+	if (!isJumping)
+	{
+		if (waveScale>=0.04f&&waveScale<=0.045f)
+		{
+			fallSpeed += JumpPower;
+			isJumping = true;
+			playerState = JUMP_START;
+		}
+	}
+
+	if (playerState == JUMP_START && animTimer == totalAnimTime)
+	{
+		playerState = JUMP_IDLE;
+	}
+
+	//Y座標が０を下回ったら０に戻す
+	if (playerPos.y < 0)
+	{
+		if (onGround)
+		{
+			fallSpeed = 0;
+			playerPos.y = 0;
+			animTimer = 0;
+			playerState = JUMP_END;
+			isJumping = false;
+		}
+	}
+
+	//落下速度を移動量に加える
+	playerVelocity.y += fallSpeed;
+
+
+	Animation();	// アニメ処理
+
+	//座標、回転、サイズなどをセット
+	playerPos = VAdd(playerPos, playerVelocity);
+	MV1SetPosition(playerHandle, playerPos);
+	MV1SetRotationXYZ(playerHandle, playerRotate);
+	MV1SetScale(playerHandle, playerScale);
+	MV1SetOpacityRate(playerHandle, alpha);
+
+	//プレイヤーの状態を保存
+	lastState = playerState;
+
+}

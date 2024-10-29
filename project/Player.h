@@ -46,6 +46,9 @@ public:
 	void Draw();	// 描画
 	void DrawDebug();// デバッグの描画
 
+	void Title(float waveScale);	//タイトル画面
+
+
 	int getPlayerHP() { return HP;}						// HP取得
 	VECTOR& getPlayerPos(){ return playerPos; }			// 座標取得
 	VECTOR& getPlayerRotate(){ return playerRotate; }	// 回転取得
