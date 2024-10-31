@@ -28,8 +28,11 @@ private:
     int Title_Settings;     // 設定選択画像
     int Score_UI;           // スコアのUI
     int Score_Effect;       // "+1"
+    int HP_UI;
+    int GameOver_Die;
+    int GameOver_Fall;
     float alpha = 1.0f;	//画像透明度
-    float img_Y = 0.0f;	//画像Y座標
+    float img_Y = -700.0f;	//画像Y座標
     void DrawScoreEffect(int i); // "+1"表示
     VECTOR effectPos[maxGroundNum];
     int FontHandle;
@@ -63,6 +66,7 @@ private:
     Enemy* TitleEnemy;
     Timer* enemyAwakenTime;
     Timer* hitStopTimer;
+    Timer* waitChangeTimer;
     HitChecker hitChecker;
 
     void UpdateTitle();  // タイトル画面の更新処理
@@ -81,4 +85,5 @@ private:
     void SelectDebugObject();// デバッグで移動するものを選択
     void DisplayFPS();       // FPS表示
     void HitStopManager();
+    void DrawHP(int HP);
 };

@@ -10,6 +10,9 @@ Game::Game()
     Title_Settings = LoadGraph("data/picture/Title_Settings.png");
     Score_UI = LoadGraph("data/picture/Score_UI.png");
     Score_Effect = LoadGraph("data/picture/+1.png");
+    HP_UI = LoadGraph("data/picture/HP.png");
+    GameOver_Die = LoadGraph("data/picture/GameOver_Die.png");
+    GameOver_Fall = LoadGraph("data/picture/GameOver_Fall.png");
     Title_isStart = true;
     isInit = false;
     isDrawingScoreEffect = false;
@@ -23,6 +26,7 @@ Game::Game()
     ObjCode = 0;
     inputA = false;
     hitStop = false;
+    img_Y = -700.0f;
 
     for (int i = 0; i < maxGroundNum; i++)
     {
@@ -34,6 +38,7 @@ Game::Game()
     TitleEnemy = new Enemy(background.getTitle_groundPos());
     enemyAwakenTime = new Timer(7000);  //7000ミリ秒ごとに敵が起きる
     hitStopTimer = new Timer(300);      //ダメージ時300ミリ秒のヒットストップ
+    waitChangeTimer = new Timer(2000);  //シーン切り替え待機時間(2秒)
 }
 
 // 更新処理
@@ -155,66 +160,82 @@ void Game::UpdateTitle()
 // ゲーム中の更新処理
 void Game::UpdatePlaying()
 {
-    HitStopManager();
-    camera.Update(player.getPlayerPos());
-    background.Update();
-    if (!hitStop)
+    if (!player.getIsGameOver())
     {
-        player.Update();
-    }
 
-    if (!enemy[0]->setIsRunning())
-    {
-        enemy[0]->setIsRunning() = true;
-    }
-    enemyAwaken();
-
-    if (CheckHitKey(KEY_INPUT_F3))
-    {
-        if (!inputF3)
+        if (player.getPlayerPos().y > -0.5)
         {
-            enemyStop = !enemyStop;
+            HitStopManager();
         }
-        inputF3 = true;
-    }
-    else
-    {
-        inputF3 = false;
-    }
-
-    if (!enemyStop&&!hitStop)
-    {
-        for (int i = 0; i < maxGroundNum; i++)
+        camera.Update(player.getPlayerPos());
+        background.Update();
+        if (!hitStop)
         {
-            enemy[i]->Update(player.getPlayerPos());
+            player.Update();
         }
-    }
-    
-    if (player.getPlayerPos().y >= -0.5)
-    {
-        for (int i = 0; i < maxGroundNum; i++)
+
+        if (!enemy[0]->setIsRunning())
         {
-            if (!player.setIsHit())
+            enemy[0]->setIsRunning() = true;
+        }
+        enemyAwaken();
+
+        if (CheckHitKey(KEY_INPUT_F3))
+        {
+            if (!inputF3)
             {
-                player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting(),effectPos[i]);
+                enemyStop = !enemyStop;
+            }
+            inputF3 = true;
+        }
+        else
+        {
+            inputF3 = false;
+        }
 
+        if (!enemyStop && !hitStop)
+        {
+            for (int i = 0; i < maxGroundNum; i++)
+            {
+                enemy[i]->Update(player.getPlayerPos());
             }
         }
-    }
 
-
-    if (isDebugMode)
-    {
-        if(CheckHitKey(KEY_INPUT_RETURN))
+        if (player.getPlayerPos().y >= -0.5)
         {
-            currentState = TITLE;       //デバッグ中にエンターでタイトル
-        }
-    }
+            for (int i = 0; i < maxGroundNum; i++)
+            {
+                if (!player.setIsHit())
+                {
+                    player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(), player.setScore(), addScore[i], player.getIsHitting(), effectPos[i]);
 
+                }
+            }
+        }
+
+
+        if (isDebugMode)
+        {
+            if (CheckHitKey(KEY_INPUT_RETURN))
+            {
+                currentState = TITLE;       //デバッグ中にエンターでタイトル
+            }
+        }
+
+    }
     // プレイが終了したらリザルト画面に遷移する処理
-    if (player.getIsGameOver())
+    else
     {
-        currentState = RESULT;
+        if (!waitChangeTimer->isActive())
+        {
+            waitChangeTimer->start();
+        }
+
+        if (waitChangeTimer->hasElapsed())
+        {
+            currentState = RESULT;
+        }
+
     }
 
 }
@@ -223,13 +244,32 @@ void Game::UpdatePlaying()
 void Game::UpdateResult()
 {
     padState = GetJoypadInputState(DX_INPUT_PAD1);
+
+    if (!isInit)
+    {
+        enemyNum = 1;
+        enemyAwakenTime->reset();
+        player.Init();
+        camera.Init(player.getPlayerPos());
+        background.Init();
+        for (int i = 0; i < maxGroundNum; i++)
+        {
+            enemy[i]->Init(background.getS_groundPos(i));
+        }
+
+        isInit = true;
+    }
+
+
+
     if ((padState & PAD_INPUT_A) != 0)
     {
         if (!inputA)
         {
-            currentState = TITLE; // スペースキーが押されたらゲーム開始
+            currentState = TITLE; 
         }
         inputA = true;
+        isInit = false;
     }
     else
     {
@@ -281,14 +321,53 @@ void Game::DrawPlaying()
         }
     }
 
-    DrawGraph(0, 0, Score_UI, TRUE);
-    DrawFormatStringToHandle(1300, 700, GetColor(255, 255, 255), FontHandle, "%d", player.setScore());
+    if (!player.getIsGameOver())
+    {
+        DrawGraph(0, 0, Score_UI, TRUE);
+        DrawFormatStringToHandle(1300, 700, GetColor(255, 255, 255), FontHandle, "%d", player.setScore());
+        DrawHP(player.getPlayerHP());
+        img_Y = -700;
+    }
+    else
+    {
+        if (player.getPlayerPos().y > -0.5f)
+        {
+            if (img_Y >= 0)
+            {
+                img_Y = 0;
+            }
+            else
+            {
+                img_Y += 100;
+            }
+            DrawGraph(0, img_Y, GameOver_Die, TRUE);
+        }
+        else
+        {
+            if (img_Y >= 0)
+            {
+                img_Y = 0;
+            }
+            else
+            {
+                img_Y += 100;
+            }
+            DrawGraph(0, img_Y, GameOver_Fall, TRUE);
+        }
+    }
+
 }
 
 // リザルト画面の描画処理
 void Game::DrawResult()
 {
-    DrawString(100, 100, "Result Screen - Press ENTER to Return to Title", GetColor(255, 255, 255));
+    background.Draw();
+
+    // 描画モードを設定
+    SetDrawBlendMode(DX_BLEND_SRC_ALPHA, 150);
+    DrawBox(0, 0, 1600, 900, GetColor(254, 254, 254), TRUE);
+    // ブレンドモードを元に戻す
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // デバッグモードのオン/オフ切り替え
@@ -501,4 +580,12 @@ void Game::DrawScoreEffect(int i)
     }
     DrawBillboard3D(effectPos[i], 0.5f, 0.5f, 5.0f, 0.0f, Score_Effect, TRUE);
     effectPos[i].y += 0.1f;
+}
+
+void Game::DrawHP(int HP)
+{
+    for (int i = 0; i < HP; i++)
+    {
+        DrawGraph(20 + (150 * i), 20, HP_UI, TRUE);
+    }
 }

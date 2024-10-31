@@ -128,7 +128,7 @@ void Player::Update()
 	}
 
 
-	if (animTime == totalAnimTime&&playerState==DIE||playerPos.y<-30.0f)
+	if (animTime == totalAnimTime&&playerState==DIE||playerPos.y<-100.0f)
 	{
 		isGameOver = true;
 	}
