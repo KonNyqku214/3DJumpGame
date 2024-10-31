@@ -13,6 +13,9 @@ Game::Game()
     Title_isStart = true;
     isInit = false;
     isDrawingScoreEffect = false;
+    LPCSTR ScoreFontpath = "ZenMaruGothic-Black.ttf";
+    ChangeFont("Zen Maru Gothic Black", DX_CHARSET_DEFAULT);
+    FontHandle = CreateFontToHandle("Zen Maru Gothic Black", 40, 4);
 
     fps = 0;
     enemyNum = 1;
@@ -20,10 +23,12 @@ Game::Game()
     ObjCode = 0;
     inputA = false;
     hitStop = false;
+
     for (int i = 0; i < maxGroundNum; i++)
     {
         enemy[i] = new Enemy(background.getS_groundPos(i));
         addScore[i] = false;
+        effectPos[i] = VGet(0, 0, 0);
     }
 
     TitleEnemy = new Enemy(background.getTitle_groundPos());
@@ -191,10 +196,12 @@ void Game::UpdatePlaying()
         {
             if (!player.setIsHit())
             {
-                player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting());
+                player.setIsHit() = hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting(),effectPos[i]);
+
             }
         }
     }
+
 
     if (isDebugMode)
     {
@@ -265,8 +272,17 @@ void Game::DrawPlaying()
             enemy[i]->DrawDebug();
         }
     }
+    for (int i = 0; i < maxGroundNum; i++)
+    {
+        isDrawingScoreEffect = addScore[i];
+        if (addScore[i])
+        {
+            DrawScoreEffect(i);
+        }
+    }
 
     DrawGraph(0, 0, Score_UI, TRUE);
+    DrawFormatStringToHandle(1300, 700, GetColor(255, 255, 255), FontHandle, "%d", player.setScore());
 }
 
 // ƒŠƒUƒ‹ƒg‰æ–Ê‚Ì•`‰æˆ—
@@ -458,7 +474,7 @@ void Game::HitStopManager()
 {
     for (int i = 0; i < maxGroundNum; i++)
     {
-        if (hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting()))
+        if (hitChecker.hitCheck(player.getPlayerPos(), enemy[i]->getEnemyPos(), player.getHitRadius(), enemy[i]->getHitRadius(), enemy[i]->getSafeRadius(),player.setScore(),addScore[i],player.getIsHitting(),effectPos[i]))
         {
             if (!player.getIsInvincible())
             {
@@ -477,15 +493,12 @@ void Game::HitStopManager()
     }
 }
 
-void Game::DrawScoreEffect(VECTOR playerPos)
+void Game::DrawScoreEffect(int i)
 {
-
-    if (!isDrawingScoreEffect)
+    if (addScore[i - 1])
     {
-        VECTOR EffectPos = playerPos;
-
-
-
-        DrawBillboard3D(playerPos, 0.5f, 0.5f, 1.0f, 0.0f, Score_Effect, TRUE);
+        effectPos[i].y = effectPos[i-1].y + 0.3f;
     }
+    DrawBillboard3D(effectPos[i], 0.5f, 0.5f, 5.0f, 0.0f, Score_Effect, TRUE);
+    effectPos[i].y += 0.1f;
 }

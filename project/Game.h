@@ -30,7 +30,9 @@ private:
     int Score_Effect;       // "+1"
     float alpha = 1.0f;	//画像透明度
     float img_Y = 0.0f;	//画像Y座標
-    void DrawScoreEffect(VECTOR playerPos); // "+1"表示
+    void DrawScoreEffect(int i); // "+1"表示
+    VECTOR effectPos[maxGroundNum];
+    int FontHandle;
     bool isDrawingScoreEffect;  //"+1"表示中か
 
 

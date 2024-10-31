@@ -1,6 +1,6 @@
 #include"HitCheck.h"
 
-bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius, float hitRadius, float safeRadius, int& Score,bool&addScore,bool isHitting)
+bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius, float hitRadius, float safeRadius, int& Score,bool&addScore,bool isHitting,VECTOR& effectPos)
 {
 	// 2つのプレイヤー間の距離を計算
 	VECTOR diff = VSub(playerPos, enemyPos);
@@ -53,6 +53,9 @@ bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius,
 		if (!addScore&&!isHitting)
 		{
 			Score++;
+			effectPos = playerPos;
+
+			effectPos.y += 5.0f;
 			addScore = true;
 		}
 		return false;		//ダメージを受けない
@@ -67,5 +70,3 @@ bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius,
 		return false;
 	}
 }
-
-

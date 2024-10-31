@@ -1,20 +1,18 @@
-﻿  Player.cpp
-C:\Users\student\Desktop\3DGame\project\Player.cpp(9,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(11,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(44,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(44,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(44,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(59,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(60,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(92,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(92,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(92,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(155,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(156,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(157,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(191,25): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(268,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(293,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(294,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\3DGame\project\Player.cpp(305,27): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-  Gameproject.vcxproj -> C:\Users\student\Desktop\3DGame\project\x64\Debug\Gameproject.exe
+﻿  Game.cpp
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Enemy.h(42,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  (ソース ファイル 'Game.cpp' をコンパイルしています)
+  
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(384,24): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(385,24): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(386,24): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(390,24): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(391,24): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(392,24): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(402,25): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Game.cpp(406,25): warning C4305: '-=': 'double' から 'float' へ切り詰めます。
+  main.cpp
+C:\Users\student\Desktop\新しいフォルダー (2)\project\Enemy.h(42,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+  コードを生成中...
+  Gameproject.vcxproj -> C:\Users\student\Desktop\新しいフォルダー (2)\project\x64\Debug\Gameproject.exe
