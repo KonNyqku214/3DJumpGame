@@ -18,7 +18,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 画面モードのセット
 	SetGraphMode(1600, 900, 32);
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 
 
 	Game game;

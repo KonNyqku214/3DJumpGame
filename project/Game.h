@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include"Player.h"
 #include"Enemy.h"
+#include"Item.h"
 #include"HitCheck.h"
 
 enum GameState
@@ -31,6 +32,7 @@ private:
     int HP_UI;
     int GameOver_Die;
     int GameOver_Fall;
+    int Results_UI;
     float alpha = 1.0f;	//‰æ‘œ“§–¾“x
     float img_Y = -700.0f;	//‰æ‘œYÀ•W
     void DrawScoreEffect(int i); // "+1"•\¦
@@ -64,6 +66,7 @@ private:
     Player player;
     Enemy* enemy[maxGroundNum];
     Enemy* TitleEnemy;
+    Item item;
     Timer* enemyAwakenTime;
     Timer* hitStopTimer;
     Timer* waitChangeTimer;

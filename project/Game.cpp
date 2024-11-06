@@ -13,6 +13,7 @@ Game::Game()
     HP_UI = LoadGraph("data/picture/HP.png");
     GameOver_Die = LoadGraph("data/picture/GameOver_Die.png");
     GameOver_Fall = LoadGraph("data/picture/GameOver_Fall.png");
+    Results_UI = LoadGraph("data/picture/results.png");
     Title_isStart = true;
     isInit = false;
     isDrawingScoreEffect = false;
@@ -169,6 +170,7 @@ void Game::UpdatePlaying()
         }
         camera.Update(player.getPlayerPos());
         background.Update();
+        item.Update();
         if (!hitStop)
         {
             player.Update();
@@ -303,6 +305,7 @@ void Game::DrawPlaying()
     }
     //enemy2->Draw();
     player.Draw();
+    item.Draw();
 
     if (isDebugMode)
     {
@@ -362,12 +365,7 @@ void Game::DrawPlaying()
 void Game::DrawResult()
 {
     background.Draw();
-
-    // 描画モードを設定
-    SetDrawBlendMode(DX_BLEND_SRC_ALPHA, 150);
-    DrawBox(0, 0, 1600, 900, GetColor(254, 254, 254), TRUE);
-    // ブレンドモードを元に戻す
-    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    DrawExtendGraph(0, 0,1600,900, Results_UI, TRUE);
 }
 
 // デバッグモードのオン/オフ切り替え
