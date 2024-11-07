@@ -25,6 +25,7 @@
     <ClCompile Include="Fishing.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HitCheck.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Fishing.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HitCheck.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

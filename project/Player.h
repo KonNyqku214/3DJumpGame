@@ -49,7 +49,7 @@ public:
 	void Title(float waveScale);	//タイトル画面
 
 
-	int getPlayerHP() { return HP;}						// HP取得
+	int& getPlayerHP() { return HP;}						// HP取得
 	int& setScore() { return Score; }					// スコア設定
 	VECTOR& getPlayerPos(){ return playerPos; }			// 座標取得
 	VECTOR& getPlayerRotate(){ return playerRotate; }	// 回転取得

@@ -70,3 +70,23 @@ bool HitChecker::hitCheck(VECTOR playerPos, VECTOR enemyPos, float playerRadius,
 		return false;
 	}
 }
+
+
+bool HitChecker::hitCheckItem(VECTOR playerPos, VECTOR itemPos, float playerRadius, float itemRadius)
+{
+	// 2つのプレイヤー間の距離を計算
+	VECTOR diff = VSub(playerPos, itemPos);
+	float distance = VSize(diff);
+
+	// 半径の合計
+	float totalRadius = playerRadius + itemRadius - 0.1f;//外側
+
+	if (distance < totalRadius)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

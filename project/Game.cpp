@@ -170,7 +170,7 @@ void Game::UpdatePlaying()
         }
         camera.Update(player.getPlayerPos());
         background.Update();
-        item.Update();
+        item.Update(player.getPlayerHP());
         if (!hitStop)
         {
             player.Update();
@@ -213,6 +213,23 @@ void Game::UpdatePlaying()
 
                 }
             }
+        }
+
+        if (item.getIsActiveHeart())
+        {
+            if (!item.getIsTakeHeart())
+            {
+                if (hitChecker.hitCheckItem(player.getPlayerPos(), item.getHeartPos(), player.getHitRadius(), item.getHeartRadius()))
+                {
+                    player.getPlayerHP()++;
+                    item.getIsActiveHeart() = false;
+                    item.getIsTakeHeart() = true;
+                }
+            }
+        }
+        else
+        {
+            item.getIsTakeHeart() = false;
         }
 
 
