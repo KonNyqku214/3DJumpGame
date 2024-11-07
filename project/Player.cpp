@@ -302,6 +302,7 @@ void Player::Animation()
 	case JUMP_END:		ChangeAnim(Anim_JUMP_END);		break;
 	case DAMAGE:		ChangeAnim(Anim_DAMAGE);		break;
 	case DIE:			ChangeAnim(Anim_DIE);			break;
+	case RESULTS:		ChangeAnim(Anim_RESULTS);		break;
 
 	}
 
@@ -500,4 +501,16 @@ void Player::Title(float waveScale)
 	//プレイヤーの状態を保存
 	lastState = playerState;
 
+}
+
+void Player::Results_Update()
+{
+	playerPos = VGet(-5, -3, 0);
+	playerRotate = VGet(0, -25 * DX_PI_F / 180.0f, 0);
+	playerState = RESULTS;
+
+
+	MV1SetPosition(playerHandle, playerPos);
+	MV1SetRotationXYZ(playerHandle, playerRotate);
+	Animation();	// アニメ処理
 }

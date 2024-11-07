@@ -19,6 +19,7 @@ const int Anim_JUMP_IDLE = 13;
 const int Anim_JUMP_END = 14;
 const int Anim_DAMAGE = 25;
 const int Anim_DIE = 28;
+const int Anim_RESULTS = 43;
 
 
 enum PlayerState
@@ -31,7 +32,8 @@ enum PlayerState
 	JUMP_IDLE,
 	JUMP_END,
 	DAMAGE,
-	DIE
+	DIE,
+	RESULTS
 };
 
 class Player
@@ -45,6 +47,7 @@ public:
 	void Update();	// 更新
 	void Draw();	// 描画
 	void DrawDebug();// デバッグの描画
+	void Results_Update();
 
 	void Title(float waveScale);	//タイトル画面
 

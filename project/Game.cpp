@@ -14,6 +14,7 @@ Game::Game()
     GameOver_Die = LoadGraph("data/picture/GameOver_Die.png");
     GameOver_Fall = LoadGraph("data/picture/GameOver_Fall.png");
     Results_UI = LoadGraph("data/picture/results.png");
+    Results_backGround = LoadGraph("data/picture/results_background.png");
     Title_isStart = true;
     isInit = false;
     isDrawingScoreEffect = false;
@@ -264,20 +265,22 @@ void Game::UpdateResult()
 {
     padState = GetJoypadInputState(DX_INPUT_PAD1);
 
-    if (!isInit)
-    {
-        enemyNum = 1;
-        enemyAwakenTime->reset();
-        player.Init();
-        camera.Init(player.getPlayerPos());
-        background.Init();
-        for (int i = 0; i < maxGroundNum; i++)
-        {
-            enemy[i]->Init(background.getS_groundPos(i));
-        }
+    player.Results_Update();
+    camera.Results_Update();
+    //if (!isInit)
+    //{
+    //    enemyNum = 1;
+    //    enemyAwakenTime->reset();
+    //    player.Init();
+    //    camera.Init(player.getPlayerPos());
+    //    background.Init();
+    //    for (int i = 0; i < maxGroundNum; i++)
+    //    {
+    //        enemy[i]->Init(background.getS_groundPos(i));
+    //    }
 
-        isInit = true;
-    }
+    //    isInit = true;
+    //}
 
 
 
@@ -381,8 +384,10 @@ void Game::DrawPlaying()
 // リザルト画面の描画処理
 void Game::DrawResult()
 {
-    background.Draw();
-    DrawExtendGraph(0, 0,1600,900, Results_UI, TRUE);
+    //background.Draw();
+    DrawGraph(0, 0, Results_backGround, TRUE);
+    player.Draw();
+    DrawGraph(0, 0,Results_UI, TRUE);
 }
 
 // デバッグモードのオン/オフ切り替え

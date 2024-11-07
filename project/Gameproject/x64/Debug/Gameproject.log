@@ -1,1 +1,22 @@
-﻿  Gameproject.vcxproj -> C:\Users\student\Desktop\新しいフォルダー (3)\project\x64\Debug\Gameproject.exe
+﻿  Player.cpp
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(9,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(11,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(60,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(61,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(162,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(163,39): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(164,55): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(220,26): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(310,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(335,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(336,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(347,27): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(430,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(431,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Gameproject.vcxproj -> C:\Users\student\Desktop\新しいフォルダー (3)\project\x64\Debug\Gameproject.exe

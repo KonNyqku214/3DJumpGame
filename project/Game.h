@@ -33,6 +33,7 @@ private:
     int GameOver_Die;
     int GameOver_Fall;
     int Results_UI;
+    int Results_backGround;
     float alpha = 1.0f;	//‰æ‘œ“§–¾“x
     float img_Y = -700.0f;	//‰æ‘œYÀ•W
     void DrawScoreEffect(int i); // "+1"•\¦
