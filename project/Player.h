@@ -21,6 +21,7 @@ const int Anim_DAMAGE = 25;
 const int Anim_DIE = 28;
 const int Anim_RESULTS = 43;
 
+const int initialScore = 0;
 
 enum PlayerState
 {
@@ -88,6 +89,7 @@ private:
 	bool isInvincible;		// 無敵常態かどうか
 	bool isGameOver;		//ゲームオーバーか
 	bool onGround;			//地面の上かどうか
+	bool isInit_Result;		//リザルト画面での初期化
 
 	//コントローラー
 	int padInputX;			// 左スティックのX軸

@@ -13,7 +13,7 @@ Player::Player()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
-	Score = 0;
+	Score = initialScore;
 	alpha = 1.0f;
 	isJumping = false;
 	onGround = true;
@@ -22,6 +22,7 @@ Player::Player()
 	isHitting = false;
 	isInvincible = false;
 	isGameOver = false;
+	isInit_Result = false;
 
 	moveSpeed = 0.0001f;
 	fallSpeed = 0.0f;
@@ -63,7 +64,7 @@ void Player::Init()
 	playerRotate = VGet(0, 0, 0);
 	playerScale = VGet(3, 3, 3);
 	HP = 3;
-	Score = 0;
+	Score = initialScore;
 	alpha = 1.0f;
 	isJumping = false;
 	onGround = true;
@@ -505,12 +506,18 @@ void Player::Title(float waveScale)
 
 void Player::Results_Update()
 {
-	playerPos = VGet(-5, -3, 0);
-	playerRotate = VGet(0, -25 * DX_PI_F / 180.0f, 0);
-	playerState = RESULTS;
+	if (!isInit_Result)
+	{
+		playerPos = VGet(-5, -3, 0);
+		playerRotate = VGet(0, -25 * DX_PI_F / 180.0f, 0);
+		playerState = RESULTS;
+	}
 
 
 	MV1SetPosition(playerHandle, playerPos);
 	MV1SetRotationXYZ(playerHandle, playerRotate);
 	Animation();	// アニメ処理
+
+	//プレイヤーの状態を保存
+	lastState = playerState;
 }

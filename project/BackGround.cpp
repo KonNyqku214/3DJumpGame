@@ -65,8 +65,8 @@ void BackGround::Init()
 	S_groundPos[1] = VGet(-20, 0, 60);
 	S_groundPos[2] = VGet(40, 0, 40);
 	S_groundPos[3] = VGet(-40, 0, 40);
-	S_groundPos[4] = VGet(60, 0, 20);
-	S_groundPos[5] = VGet(-60, 0, 20);
+	//S_groundPos[4] = VGet(60, 0, 20);
+	//S_groundPos[5] = VGet(-60, 0, 20);
 
 	S_groundRotate = VGet(0, 45 * DX_PI_F / 180.0f, 0);
 	S_groundScale = VGet(0.07, 0.07, 0.07);

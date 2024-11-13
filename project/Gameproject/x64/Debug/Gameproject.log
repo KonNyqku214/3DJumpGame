@@ -1,22 +1,32 @@
-﻿  Player.cpp
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(9,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(11,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(45,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(60,38): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(61,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,45): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,39): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(95,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(162,33): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(163,39): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(164,55): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(220,26): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(310,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(335,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(336,43): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(347,27): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(430,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\新しいフォルダー (3)\project\Player.cpp(431,13): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
-  Gameproject.vcxproj -> C:\Users\student\Desktop\新しいフォルダー (3)\project\x64\Debug\Gameproject.exe
+﻿  Enemy.cpp
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.h(48,33): warning C4244: 'return': 'double' から 'float' への変換です。データが失われる可能性があります。
+  (ソース ファイル 'Enemy.cpp' をコンパイルしています)
+  
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(19,31): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(23,31): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(23,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(23,19): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(54,62): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(61,31): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(65,31): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(65,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(65,19): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(78,32): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(78,26): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(78,19): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(154,31): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(155,54): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(172,71): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(181,14): warning C4244: '初期化中': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(217,22): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(218,20): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(223,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(224,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(251,29): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(252,28): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(253,28): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(291,53): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(340,20): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(344,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+C:\Users\student\Desktop\新しいフォルダー\project\Enemy.cpp(345,18): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+  Gameproject.vcxproj -> C:\Users\student\Desktop\新しいフォルダー\project\x64\Debug\Gameproject.exe

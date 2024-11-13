@@ -130,6 +130,7 @@ void Game::UpdateTitle()
         camera.Init(player.getPlayerPos());
         background.Init();
         player.Init();
+        item.Init();
         for (int i = 0; i < maxGroundNum; i++)
         {
             enemy[i]->Init(background.getS_groundPos(i));
@@ -200,7 +201,7 @@ void Game::UpdatePlaying()
         {
             for (int i = 0; i < maxGroundNum; i++)
             {
-                enemy[i]->Update(player.getPlayerPos());
+                enemy[i]->Update(player.getPlayerPos(),player.setScore());
             }
         }
 

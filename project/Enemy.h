@@ -4,7 +4,6 @@
 #include"Timer.h"
 
 //’è”
-const float waveSpeed = 0.0015f;
 const float hitRadiusScale = 500.0f;
 const float safeRadiusScale = 50.0f;
 const float maxWaveScale = 0.2f;
@@ -22,6 +21,13 @@ enum EnemyState
 	AWAKEN
 };
 
+enum WaveState
+{
+	NORMAL,
+	SLOW,
+	HIGH
+};
+
 class Enemy
 {
 public:
@@ -29,7 +35,7 @@ public:
 	~Enemy();
 
 	void Init(VECTOR groundPos);
-	void Update(VECTOR playerPos);
+	void Update(VECTOR playerPos,int score);
 	void Draw();
 	void DrawDebug();
 	void Title_Update();
@@ -47,13 +53,16 @@ public:
 private:
 	//ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
 	int enemyHandle;
-	int waveHandle;
+	int wave_Normal;
+	int wave_Slow;
+	int wave_High;
 	int waitTime;				//UŒ‚‚Ì‘Ò‹@ŠÔ
 	int runningEnemyNum;		//‹N“®’†‚Ì“G‚Ì”
 	float hitRadius;			//ÕŒ‚”g‚Ì”¼Œa
 	float safeRadius;			//ˆÀ‘S”ÍˆÍ‚Ì”¼Œa
 	float hitRadiusWidth;		//ÕŒ‚”g‚Ì•
 	float shadowWidth;			//‰e‚Ì•
+	float waveSpeed;			//”g‚Ì‘¬“x
 	bool isAttack;				//UŒ‚’†‚©
 	bool waveRunning;			//ÕŒ‚”g‚ª“®‚¢‚Ä‚¢‚é‚©
 	bool isRunning;				//“G‚ª‹N“®’†‚©
@@ -79,12 +88,13 @@ private:
 	VECTOR waveScale;
 	EnemyState enemyState;
 	EnemyState lastState;
+	WaveState waveState;
 	Timer* waitTimer;
 
 	void calcRotateY(VECTOR playerPos);
 	void ChangeAnim(int animIndex);
 	void Animation();
-	void AttackManager();
+	void AttackManager(int score);
 
 
 };

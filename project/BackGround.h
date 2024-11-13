@@ -1,7 +1,7 @@
 #pragma once
 #include"DxLib.h"
 
-const int maxGroundNum = 6;
+const int maxGroundNum = 4;
 
 class BackGround
 {
